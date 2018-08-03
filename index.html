@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>预约系统</title>
+
+    <script src="https://img.acadsoc.com.cn/web/webnew/assets/admin/global/js/jquery.min.js?ver=20170728"
+            type="text/javascript"></script>
+    <script src="https://img.acadsoc.com.cn/web/webnew/assets/admin/global/js/moment.min.js?ver=20170728"
+            type="text/javascript"></script>
+
+    <script>
+      $(document).ready(function () {
+        let begin = moment('2013-11-18 06:00')
+        for (let i = 0; i < (24 - 6) * 2; ++i, begin.add(30, 'minutes')) {
+          if (i % 2 === 0) {
+            $('#calendar_body').append('<tr class="time even"><td>' + begin.format('HH:mm') + '</td></tr>')
+          } else {
+            $('#calendar_body').append('<tr class="time odd"><td>' + begin.format('HH:mm') + '</td></tr>')
+          }
+        }
+        for (let i = 0; i < 7; ++i) {
+          $('.time').append('<td><div class="square" style="height: 20px; width: 100%"></div></td>')
+        }
+
+        $('.square')
+          .mouseenter(function () {
+            if ($(this).text() !== '')
+              return
+            $(this).css('background', 'yellow')
+          })
+          .mouseleave(function () {
+            if ($(this).text() !== '')
+              return
+            $(this).css('background', 'inherit')
+          })
+          .dblclick(function () {
+            let url
+            if ($(this).text() !== '') {
+              url = '/cancel'
+              $(this).css('background', 'inherit')
+              $(this).text('')
+            } else {
+              url = '/book'
+              $(this).css('background', 'red')
+              $(this).text('+')
+            }
+
+            let td = $(this).parent()
+            let tr = td.parent()
+
+            let time = tr.children(':first').text()
+            let weekday = tr.children('*').index(td)
+            console.log(time, weekday)
+
+            $.ajax({
+              type: 'post',
+              async: true,
+              dataType: 'json',
+              url: url,
+              data: JSON.stringify({
+                time: time,
+                weekday: weekday,
+              }),
+              success: function (data) {
+                console.log(data)
+              }
+            })
+          })
+
+
+        $.ajax({
+          type: 'get',
+          async: true,
+          url: '/time',
+          success: function (data) {
+            let json = JSON.parse(data)
+            json.forEach(function (e) {
+              console.log(e)
+              let tr = $('td:contains("' + e.time + '")').parent()
+              let td = tr.children('*').eq(e.weekday)
+              let div = td.children(':first')
+              div.css('background', 'red')
+              div.text('+')
+            })
+
+          }
+        })
+      })
+    </script>
+
+    <style>
+        body {
+            font-size: 1em;
+        }
+
+        thead {
+            background: #1cbc9d !important;
+            height: 35px;
+            line-height: 35px;
+            color: #fff;
+        }
+
+        td {
+            border: 1px solid #ddd;
+            padding: 0;
+            margin: 0;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        table {
+            padding: 0;
+            border-collapse: collapse;
+        }
+
+        .odd {
+            background: lightgray;
+        }
+
+        .even {
+            background: inherit;
+        }
+    </style>
+</head>
+<body>
+<div id="calendar">
+    <table>
+        <thead>
+        <tr>
+            <td></td>
+            <td> Mon</td>
+            <td> Tue</td>
+            <td> Wed</td>
+            <td> Thu</td>
+            <td> Fri</td>
+            <td> Sat</td>
+            <td> Sun</td>
+        </tr>
+        </thead>
+
+        <tbody id="calendar_body">
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
