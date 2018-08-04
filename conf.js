@@ -18,7 +18,17 @@ function save(time) {
   })
 }
 
+function read_account(callback) {
+  fs.readFile('./account.txt', function (err, data) {
+    if (err)
+      throw err
+    let arr = data.toString().split(' ')
+    callback(arr[0], arr[1])
+  })
+}
+
 module.exports = {
   read: read,
   save: save,
+  read_account: read_account,
 }

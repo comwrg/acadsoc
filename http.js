@@ -85,6 +85,11 @@ server.listen(8000);
 const usr = ''
 const pwd = ''
 
+conf.read_account(function (a, b) {
+  this.usr = a
+  this.pwd = b
+})
+
 conf.read(function (data) {
   time = data
 })
