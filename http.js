@@ -3,9 +3,10 @@ let fs = require('fs')
 let api = require('./api.js')
 let schedule = require('node-schedule')
 let moment = require('moment')
+let conf = require('./conf.js')
 require('date-utils')
 let indexhtml
-let time = []
+let time
 
 function debug(s) {
   process.stdout.write(moment().format('YYYY/MM/DD hh:mm:ss: ') + s + '\n')
@@ -39,6 +40,7 @@ let server = http.createServer(function (req, resp) {
 
         resp.writeHead(200)
         resp.end(JSON.stringify(time))
+        conf.save(time)
       } catch (e) {
         process.stderr.write(e)
         resp.writeHead(404)
@@ -54,6 +56,7 @@ let server = http.createServer(function (req, resp) {
 
         resp.writeHead(200)
         resp.end(JSON.stringify(time))
+        conf.save(time)
       } catch (e) {
         process.stderr.write(e)
         resp.writeHead(404)
@@ -75,24 +78,35 @@ let server = http.createServer(function (req, resp) {
 
 server.listen(8000);
 
+const usr = ''
+const pwd = ''
 
-api.login('', '', function () {
-  schedule.scheduleJob('* * * * * *', function () {
-    let start = Date.today().addDays(1).toFormat('YYYY-MM-DD')
-    let end = Date.today().addDays(8).toFormat('YYYY-MM-DD')
-    api.getTutorTime(start, end, function (list) {
-      list.forEach(function (e) {
-        let m = moment(e)
-        let time = m.format('HH:mm')
-        let weekday = m.format('E')
+conf.read(function (data) {
+  time = data
+})
 
-        time.forEach(function (t) {
-          if (t.time === time && t.weekday == weekday) {
-            api.appoint(e, function (data) {
-              debug(data)
-            })
-          }
-        })
+api.login(usr, pwd)
+
+schedule.scheduleJob('0 0 * * * *', function () {
+  api.login(usr, pwd)
+})
+
+schedule.scheduleJob('* * * * * *', function () {
+  let start = Date.today().addDays(1).toFormat('YYYY-MM-DD')
+  let end = Date.today().addDays(8).toFormat('YYYY-MM-DD')
+  api.getTutorTime(start, end, function (list) {
+    list.forEach(function (e) {
+      let m = moment(e)
+      let hm = m.format('HH:mm')
+      let weekday = m.format('E')
+
+      time.forEach(function (t) {
+        if (t.time === hm && t.weekday == weekday) {
+          debug(e)
+          api.appoint(e, function (data) {
+            debug(data)
+          })
+        }
       })
     })
   })

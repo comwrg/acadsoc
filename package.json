@@ -2,9 +2,9 @@
   "name": "acadsoc",
   "version": "1.0.0",
   "description": "",
-  "main": "api.js",
+  "main": "http.js",
   "scripts": {
-    "start": "node api.js"
+    "start": "node http.js"
   },
   "repository": "https://github.com/comwrg/acadsoc",
   "keywords": [],

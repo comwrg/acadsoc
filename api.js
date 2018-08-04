@@ -1,6 +1,4 @@
-require('date-utils')
 let moment = require('moment')
-let schedule = require('node-schedule')
 let request = require('request')
 let req = request.defaults({jar: true})
 let uid, coid
@@ -43,7 +41,8 @@ function login(usr, pwd, after_login_success) {
         return
       coid = r[1]
 
-      after_login_success()
+      if (after_login_success)
+        after_login_success()
     })
   })
 }
@@ -111,30 +110,12 @@ function appoint(start, callback) {
 }
 
 
-let success_list = []
-try {
-  login('', '', function () {
-    schedule.scheduleJob('* * * * * *', function () {
-      let start = Date.today().addDays(1).toFormat('YYYY-MM-DD')
-      let end = Date.today().addDays(8).toFormat('YYYY-MM-DD')
-      getTutorTime(start, end, function (list) {
-        for (let i in list) {
-          if (success_list.continue(list[i]))
-            continue
-          debug(list[i])
-          appoint(list[i], function (data) {
-            debug(data)
-            if (data.indexOf('成功') !== -1) {
-              success_list.push(list[i])
-            }
-          })
-        }
-      })
-    })
-  })
-} catch (e) {
-  debug(e)
-}
 
+
+module.exports = {
+  login: login,
+  getTutorTime: getTutorTime,
+  appoint: appoint,
+}
 
 
