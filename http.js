@@ -82,19 +82,19 @@ let server = http.createServer(function (req, resp) {
 
 server.listen(8000);
 
-const usr = ''
-const pwd = ''
+let usr = ''
+let pwd = ''
 
 conf.read_account(function (a, b) {
-  this.usr = a
-  this.pwd = b
+  usr = a
+  pwd = b
+  api.login(usr, pwd)
 })
 
 conf.read(function (data) {
   time = data
 })
 
-api.login(usr, pwd)
 
 schedule.scheduleJob('0 0 * * * *', function () {
   api.login(usr, pwd)

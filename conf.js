@@ -23,7 +23,7 @@ function read_account(callback) {
     if (err)
       throw err
     let arr = data.toString().split(' ')
-    callback(arr[0], arr[1])
+    callback(arr[0].trim(), arr[1].trim())
   })
 }
 
