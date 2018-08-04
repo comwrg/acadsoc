@@ -9,8 +9,12 @@ let indexhtml
 let time
 
 function debug(s) {
-  process.stdout.write(moment().format('YYYY/MM/DD hh:mm:ss: ') + s + '\n')
+  process.stdout.write(moment().format('YYYY/MM/DD hh:mm:ss: ') + s.toString() + '\n')
 }
+
+process.on('uncaughtException', function (e) {
+  debug(e)
+});
 
 fs.readFile('./index.html', 'utf-8', function (err, data) {
   if (err) {
