@@ -1,15 +1,12 @@
 let moment = require('moment')
 let request = require('request')
+const log = require('./log.js')
 let req = request.defaults({jar: true})
 let uid, coid
 
-function debug(s) {
-  process.stdout.write(moment().format('YYYY/MM/DD hh:mm:ss: ') + s + '\n')
-}
-
 function check(b, s) {
   if (!b) {
-    process.stderr.write(s + '\n')
+    log.d(s)
     process.exit(1)
   }
 }

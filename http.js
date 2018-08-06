@@ -4,16 +4,13 @@ let api = require('./api.js')
 let schedule = require('node-schedule')
 let moment = require('moment')
 let conf = require('./conf.js')
+const log = require('./log.js')
 require('date-utils')
 let indexhtml
 let time
 
-function debug(s) {
-  process.stdout.write(moment().format('YYYY/MM/DD hh:mm:ss: ') + s.toString() + '\n')
-}
-
 process.on('uncaughtException', function (e) {
-  debug(e)
+  log.d(e)
 });
 
 fs.readFile('./index.html', 'utf-8', function (err, data) {
@@ -111,9 +108,9 @@ schedule.scheduleJob('* * * * * *', function () {
 
       time.forEach(function (t) {
         if (t.time === hm && t.weekday == weekday) {
-          debug(e)
+          log.d(e)
           api.appoint(e, function (data) {
-            debug(data)
+            log.d(data)
           })
         }
       })
