@@ -93,7 +93,7 @@ conf.read(function (data) {
 })
 
 
-schedule.scheduleJob('0 0 * * * *', function () {
+schedule.scheduleJob('0 0 0 * * *', function () {
   api.login(usr, pwd)
 })
 
