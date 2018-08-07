@@ -8,6 +8,7 @@ const log = require('./log.js')
 require('date-utils')
 let indexhtml
 let time
+let appoint_list = []
 
 process.on('uncaughtException', function (e) {
   log.d(e)
@@ -95,6 +96,10 @@ conf.read(function (data) {
 
 schedule.scheduleJob('0 0 0 * * *', function () {
   api.login(usr, pwd)
+
+  appoint_list = appoint_list.filter(function (v) {
+    return moment(v) >= moment.now()
+  })
 })
 
 schedule.scheduleJob('* * * * * *', function () {
@@ -102,6 +107,8 @@ schedule.scheduleJob('* * * * * *', function () {
   let end = Date.today().addDays(31).toFormat('YYYY-MM-DD')
   api.getTutorTime(start, end, function (list) {
     list.forEach(function (e) {
+      if (appoint_list.includes(e))
+        return
       let m = moment(e)
       let hm = m.format('HH:mm')
       let weekday = m.format('E')
@@ -111,6 +118,9 @@ schedule.scheduleJob('* * * * * *', function () {
           log.d(e)
           api.appoint(e, function (data) {
             log.d(data)
+            if (data.indexOf('成功') > -1) {
+              appoint_list.push(e)
+            }
           })
         }
       })
