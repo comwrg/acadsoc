@@ -102,7 +102,7 @@ schedule.scheduleJob('0 0 0 * * *', function () {
   })
 })
 
-schedule.scheduleJob('* * * * * *', function () {
+schedule.scheduleJob('*/3 * 9-22 * * *', function () {
   let start = Date.today().addDays(1).toFormat('YYYY-MM-DD')
   let end = Date.today().addDays(31).toFormat('YYYY-MM-DD')
   api.getTutorTime(start, end, function (list) {
