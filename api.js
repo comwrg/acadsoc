@@ -60,15 +60,20 @@ function getTutorTime(start, end, callback) {
     body.push(data)
   }).on('end', function () {
     body = Buffer.concat(body).toString()
-    body = JSON.parse(body)
-
-    let list = []
-    for (let i in body.value) {
-      let start = body.value[i].start
-      start = start.replace('T', ' ')
-      list.push(start)
+    try {
+      body = JSON.parse(body)
+      let list = []
+      for (let i in body.value) {
+        let start = body.value[i].start
+        start = start.replace('T', ' ')
+        list.push(start)
+      }
+      callback(list)
+    } catch (e) {
+      log.d(e)
+      log.d(body)
+      callback([])
     }
-    callback(list)
   })
 }
 
@@ -83,7 +88,12 @@ function appoint(start, callback) {
   }).on('data', function (data) {
     // {"code":0,"msg":null,"value":[{"TUID":23831,"FullName":"Prin.cess","sex":0}]}
     data = JSON.parse(data)
-    let tuid = data.value[0].TUID
+    try {
+      var tuid = data.value[0].TUID
+    } catch (e) {
+      log.d(e)
+      log.d(data)
+    }
     req.post({
       url: 'http://www.acadsoc.com.cn/Ajax/Web.UI.Fun.Course.aspx',
       form: {
