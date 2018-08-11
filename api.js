@@ -3,15 +3,17 @@ let request = require('request')
 const log = require('./log.js')
 let req = request.defaults({jar: true})
 let uid, coid
+let u, p
 
 function check(b, s) {
   if (!b) {
     log.d(s)
-    process.exit(1)
   }
 }
 
 function login(usr, pwd, after_login_success) {
+  u = usr
+  p = pwd
   req.post({
     url: 'http://www.acadsoc.com.cn/Ajax/Web.UI.Fun.User.aspx',
     form: {
@@ -73,6 +75,7 @@ function getTutorTime(start, end, callback) {
       log.d(e)
       log.d(body)
       callback([])
+      login(u, p)
     }
   })
 }
