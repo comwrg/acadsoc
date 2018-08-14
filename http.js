@@ -94,7 +94,7 @@ conf.read(function (data) {
 })
 
 
-schedule.scheduleJob('0 0 0 * * *', function () {
+schedule.scheduleJob('0 0 9 * * *', function () {
   api.login(usr, pwd)
 
   appoint_list = appoint_list.filter(function (v) {
