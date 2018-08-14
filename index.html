@@ -4,10 +4,16 @@
     <meta charset="UTF-8">
     <title>预约系统</title>
 
+    <!-- Insert this line above script imports, https://stackoverflow.com/questions/32621988/electron-jquery-is-not-defined  -->
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+
     <script src="https://img.acadsoc.com.cn/web/webnew/assets/admin/global/js/jquery.min.js?ver=20170728"
             type="text/javascript"></script>
     <script src="https://img.acadsoc.com.cn/web/webnew/assets/admin/global/js/moment.min.js?ver=20170728"
             type="text/javascript"></script>
+
+    <!-- Insert this line after script imports -->
+    <script>if (window.module) module = window.module;</script>
 
     <script>
       $(document).ready(function () {

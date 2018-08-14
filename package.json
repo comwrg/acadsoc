@@ -2,15 +2,17 @@
   "name": "acadsoc",
   "version": "1.0.0",
   "description": "",
-  "main": "http.js",
+  "main": "electron.js",
   "scripts": {
-    "start": "node http.js"
+    "start": "electron ."
   },
   "repository": "https://github.com/comwrg/acadsoc",
   "keywords": [],
   "author": "comwrg",
   "license": "MIT",
-  "devDependencies": {},
+  "devDependencies": {
+    "electron": "^2.0.7"
+  },
   "dependencies": {
     "date-utils": "^1.2.21",
     "moment": "^2.22.2",
