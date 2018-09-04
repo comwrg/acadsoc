@@ -15,7 +15,7 @@ function login(usr, pwd, after_login_success) {
   u = usr
   p = pwd
   req.post({
-    url: 'http://www.acadsoc.com.cn/Ajax/Web.UI.Fun.User.aspx',
+    url: 'https://www.acadsoc.com.cn/Ajax/Web.UI.Fun.User.aspx',
     form: {
       phone: '"' + usr +'"',
       password: '"' + pwd + '"',
@@ -26,7 +26,7 @@ function login(usr, pwd, after_login_success) {
 
     // get uid
     req.get({
-      url: 'http://www.acadsoc.com.cn/WebNew/user/BookClass/bookclass.aspx',
+      url: 'https://www.acadsoc.com.cn/WebNew/user/BookClass/bookclass.aspx',
     }).on('data', function (data) {
       let r
 
@@ -49,7 +49,7 @@ function login(usr, pwd, after_login_success) {
 function getTutorTime(start, end, callback) {
   let body = []
   req.post({
-    url: 'http://www.acadsoc.com.cn/Ajax/Web.UI.Fun.Course.aspx',
+    url: 'https://www.acadsoc.com.cn/Ajax/Web.UI.Fun.Course.aspx',
     form: {
       // __=GetTutorTimeByIDS&uid=1533026&coid=884153&start=2018-07-30&end=2018-08-06
       __: 'GetTutorTimeByIDS',
@@ -82,7 +82,7 @@ function getTutorTime(start, end, callback) {
 
 function appoint(start, callback) {
   req.post({
-    url: 'http://www.acadsoc.com.cn/Ajax/Web.UI.Fun.Course.aspx',
+    url: 'https://www.acadsoc.com.cn/Ajax/Web.UI.Fun.Course.aspx',
     form: {
       COID: coid,
       start: '"' + start + '"',
@@ -98,7 +98,7 @@ function appoint(start, callback) {
       log.d(data)
     }
     req.post({
-      url: 'http://www.acadsoc.com.cn/Ajax/Web.UI.Fun.Course.aspx',
+      url: 'https://www.acadsoc.com.cn/Ajax/Web.UI.Fun.Course.aspx',
       form: {
         // TUID=23831&bookingWay=3&COID=884153&UID=1533026&targetTime=%222018-08-09+13%3A00%22&classtool=1&isNew=0&teacherPers=%22%22&teacherStyle=%22%22&__=AppointClass
         TUID: tuid,
